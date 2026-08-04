@@ -23,15 +23,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Homebrew
-        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
-
-      - name: Cache Homebrew Bundler RubyGems
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-cache }}
-          key: ubuntu-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ubuntu-rubygems-
 
       # Tap this checkout so `brew style`/`brew audit` resolve it by tap name (audit --tap needs a
       # real tap). setup-homebrew leaves the repo in the workspace; `brew tap <name> <path>` clones
