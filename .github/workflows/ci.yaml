@@ -1,0 +1,77 @@
+# CI for the Hippocampus Homebrew tap. Two jobs:
+#   - syntax: `brew style` + `brew audit` on every push and PR (fast, platform-independent).
+#   - install: on PRs only, actually installs + tests each formula on macOS and Linux, catching a
+#     bad url/sha or a broken `install`/`test` block that style/audit can't see. It is PR-only so the
+#     automated `hippocampus <version>` bump commits (pushed straight to main by the release
+#     workflow) run just the cheap syntax check — their hashes come from the release checksums.txt
+#     and so are correct by construction.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Cache Homebrew Bundler RubyGems
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-cache }}
+          key: ubuntu-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ubuntu-rubygems-
+
+      # Tap this checkout so `brew style`/`brew audit` resolve it by tap name (audit --tap needs a
+      # real tap). setup-homebrew leaves the repo in the workspace; `brew tap <name> <path>` clones
+      # it into Homebrew's taps tree - a fresh clone each run, so no staleness.
+      - name: Tap this checkout
+        run: brew tap fastbean-au/tap "${GITHUB_WORKSPACE}"
+
+      - name: brew style
+        run: brew style fastbean-au/tap
+
+      - name: brew audit
+        run: brew audit --tap fastbean-au/tap
+
+  install:
+    if: github.event_name == 'pull_request'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Tap this checkout
+        run: brew tap fastbean-au/tap "${GITHUB_WORKSPACE}"
+
+      # Install + run each formula's `test do` block (all three are lightweight `--version` checks).
+      # This downloads the real release assets the formulae pin, so it verifies the url/sha256 pairs
+      # resolve on the runner's OS/arch and the `install` block lays the binary down correctly.
+      - name: Install and test the formulae
+        run: |
+          set -euo pipefail
+
+          for formula in hippocampus hippocampus-cli hippocampus-mcp; do
+            brew install --formula "fastbean-au/tap/${formula}"
+            brew test "fastbean-au/tap/${formula}"
+          done
