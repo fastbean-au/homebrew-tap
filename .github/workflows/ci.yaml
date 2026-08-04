@@ -5,6 +5,10 @@
 #     automated `hippocampus <version>` bump commits (pushed straight to main by the release
 #     workflow) run just the cheap syntax check — their hashes come from the release checksums.txt
 #     and so are correct by construction.
+#
+# Homebrew/actions/setup-homebrew auto-taps this checkout (the repo is a homebrew-* tap), registering
+# it as fastbean-au/tap against the working tree, so the jobs reference the tap by name directly - a
+# manual `brew tap` would conflict with that ("remote mismatch").
 name: CI
 
 on:
@@ -24,12 +28,6 @@ jobs:
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-
-      # Tap this checkout so `brew style`/`brew audit` resolve it by tap name (audit --tap needs a
-      # real tap). setup-homebrew leaves the repo in the workspace; `brew tap <name> <path>` clones
-      # it into Homebrew's taps tree - a fresh clone each run, so no staleness.
-      - name: Tap this checkout
-        run: brew tap fastbean-au/tap "${GITHUB_WORKSPACE}"
 
       - name: brew style
         run: brew style fastbean-au/tap
@@ -52,9 +50,6 @@ jobs:
 
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-
-      - name: Tap this checkout
-        run: brew tap fastbean-au/tap "${GITHUB_WORKSPACE}"
 
       # Install + run each formula's `test do` block (all three are lightweight `--version` checks).
       # This downloads the real release assets the formulae pin, so it verifies the url/sha256 pairs
