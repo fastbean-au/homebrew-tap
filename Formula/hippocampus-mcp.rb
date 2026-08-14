@@ -8,23 +8,23 @@ class HippocampusMcp < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.31.0/hippocampus-mcp_v0.31.0_darwin_arm64.tar.gz"
-      sha256 "687bfd4babd0b19a1025fb280773c646102a2800db2bfbab7204e1cc265e12af"
+      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.32.0/hippocampus-mcp_v0.32.0_darwin_arm64.tar.gz"
+      sha256 "994ad49fa976c5eb61db34bcc8608b75e7a23a5572a0c2f1be3fb6475c9183bf"
     end
     on_intel do
-      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.31.0/hippocampus-mcp_v0.31.0_darwin_amd64.tar.gz"
-      sha256 "f1d3dd772dcf48c4c88388e2a6a9211c3dcae6aec135623eb55135a2a6373c9a"
+      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.32.0/hippocampus-mcp_v0.32.0_darwin_amd64.tar.gz"
+      sha256 "2eb19651320eb519b44ef27c9fdc2f0a8d80754e9d200ba73c09af9eaf87c19b"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.31.0/hippocampus-mcp_v0.31.0_linux_arm64.tar.gz"
-      sha256 "3c1e09de3b2ab6f0e9cf0d637b8b8eb70608f48b646f31e33b1ad293560c44b3"
+      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.32.0/hippocampus-mcp_v0.32.0_linux_arm64.tar.gz"
+      sha256 "c10b1cb86281f494f8d90d5d12b922a7c95fa86e32bbeb35b8d86a728b072d56"
     end
     on_intel do
-      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.31.0/hippocampus-mcp_v0.31.0_linux_amd64.tar.gz"
-      sha256 "3504544c68e217e0a90bb474afdbad945176fa8934aa414a819da1aaef4d9d8e"
+      url "https://github.com/fastbean-au/hippocampus/releases/download/v0.32.0/hippocampus-mcp_v0.32.0_linux_amd64.tar.gz"
+      sha256 "723fa7de47def6eaae98b1638f1bef0792222aacc6aaa1d1e4a4ed48d92c98f0"
     end
   end
 
