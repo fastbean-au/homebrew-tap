@@ -1,0 +1,25 @@
+# Dependabot configuration.
+#
+# Version updates require this file; security updates run from the repository's settings and do
+# not. There is exactly one ecosystem to declare here, and the reason is worth stating so nobody
+# comes looking for the other one.
+#
+# THE FORMULAE ARE NOT DEPENDENCIES Dependabot can see. There is no `homebrew` package-ecosystem,
+# and there could not usefully be one for this repository: each formula pins a `version` and the
+# per-arch `sha256`s of a Hippocampus release tarball, and those are raised from that release's
+# `checksums.txt` by the service's release workflow. A bot that guessed at them would be guessing
+# at a checksum. So the formulae move when a release moves, and nothing here watches them.
+#
+# What IS watchable is the CI workflow's actions, which are the only third-party code this
+# repository runs.
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"

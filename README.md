@@ -1,5 +1,9 @@
 # homebrew-tap
 
+[![CI](https://github.com/fastbean-au/homebrew-tap/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/fastbean-au/homebrew-tap/actions/workflows/ci.yaml)
+![Dependabot](https://img.shields.io/badge/dependabot-enabled-brightgreen)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastbean-au/homebrew-tap/badge.svg)](https://snyk.io/test/github/fastbean-au/homebrew-tap)
+
 Homebrew formulae for [Hippocampus](https://github.com/fastbean-au/hippocampus) — a memory service
 with intentional forgetting.
 
