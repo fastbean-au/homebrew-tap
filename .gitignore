@@ -1,0 +1,28 @@
+# This repository is formulae, markdown and one workflow - there is nothing to build here, so the
+# only things worth ignoring are what a machine leaves behind beside them.
+
+# macOS Finder metadata. Written into any directory the Finder has opened, including this one.
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor/IDE state
+.idea/
+.vscode/
+*.swp
+*~
+
+# Claude Code's per-repository working directory
+.claude/
+
+# Local Homebrew output. `brew fetch`/`brew install --build-from-source` against a working-tree tap
+# can drop a downloaded tarball or an unpacked tree beside the formula; only the .rb files belong.
+*.tar.gz
+*.bottle.tar.gz
+*.bottle.json
+Formula/*.tar.gz
+
+# Trunk (.trunk/) is deliberately absent from this list: trunk is set up in single-player mode and
+# excludes its own directory through .git/info/exclude, which keeps one person's linter cache out
+# of a repository that has no shared trunk configuration.
