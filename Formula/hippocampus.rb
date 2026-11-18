@@ -38,45 +38,42 @@ class Hippocampus < Formula
     # Install a default embedded-SQLite config, but never clobber an operator's edited one on
     # upgrade. storage.directory is written with the real Homebrew prefix (/usr/local vs
     # /opt/homebrew) via #{var}.
+    #
+    # Kept in sync with deploy/systemd/config.json in the main repo; only storage.directory differs
+    # (Homebrew's var). Held here rather than fetched from the repo so the formula does not depend
+    # on source files existing at the tagged commit — only the released binary tarball does.
     config = etc/"hippocampus/config.json"
     unless config.exist?
       (etc/"hippocampus").mkpath
-      config.write default_config
+      config.write <<~JSON
+        {
+            "logging": { "level": "info", "json": true },
+            "port": 50051,
+            "gateway": { "port": 8080 },
+            "auth": { "method": "none", "signingSecret": "" },
+            "tls": { "enabled": false, "certFile": "", "keyFile": "" },
+            "storage": {
+                "driver": "sqlite",
+                "directory": "#{var}/hippocampus",
+                "postgres": { "dsn": "" }
+            },
+            "memory": { "limit": { "sizeBytes": 1048576 }, "minimumSignificance": 0 },
+            "event": { "minimumSignificance": 0 },
+            "sleep": { "periodSeconds": 3600 },
+            "consolidation": {
+                "minimumAgeInDays": 14,
+                "aggressiveness": 1.0,
+                "deletionThreshold": 10,
+                "method": 1,
+                "unitsOfAgeInDays": 1.0,
+                "relationshipSignificanceWeight": 1.0,
+                "recallSignificanceWeight": 1.0,
+                "capacityMemories": 100000,
+                "capacityPressureExponent": 4.0
+            }
+        }
+      JSON
     end
-  end
-
-  # Kept in sync with deploy/systemd/config.json in the main repo; only storage.directory differs
-  # (Homebrew's var). Held here rather than fetched from the repo so the formula does not depend on
-  # source files existing at the tagged commit — only the released binary tarball does.
-  def default_config
-    <<~JSON
-      {
-          "logging": { "level": "info", "json": true },
-          "port": 50051,
-          "gateway": { "port": 8080 },
-          "auth": { "method": "none", "signingSecret": "" },
-          "tls": { "enabled": false, "certFile": "", "keyFile": "" },
-          "storage": {
-              "driver": "sqlite",
-              "directory": "#{var}/hippocampus",
-              "postgres": { "dsn": "" }
-          },
-          "memory": { "limit": { "sizeBytes": 1048576 }, "minimumSignificance": 0 },
-          "event": { "minimumSignificance": 0 },
-          "sleep": { "periodSeconds": 3600 },
-          "consolidation": {
-              "minimumAgeInDays": 14,
-              "aggressiveness": 1.0,
-              "deletionThreshold": 10,
-              "method": 1,
-              "unitsOfAgeInDays": 1.0,
-              "relationshipSignificanceWeight": 1.0,
-              "recallSignificanceWeight": 1.0,
-              "capacityMemories": 100000,
-              "capacityPressureExponent": 4.0
-          }
-      }
-    JSON
   end
 
   def caveats
