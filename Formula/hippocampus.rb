@@ -49,7 +49,8 @@ class Hippocampus < Formula
         {
             "logging": { "level": "info", "json": true },
             "port": 50051,
-            "gateway": { "port": 8080 },
+            "bindAddress": "127.0.0.1",
+            "gateway": { "port": 8080, "bindAddress": "127.0.0.1" },
             "auth": { "method": "none", "signingSecret": "" },
             "tls": { "enabled": false, "certFile": "", "keyFile": "" },
             "storage": {
@@ -66,7 +67,7 @@ class Hippocampus < Formula
                 "deletionThreshold": 10,
                 "method": 1,
                 "unitsOfAgeInDays": 1.0,
-                "relationshipSignificanceWeight": 1.0,
+                "linkSignificanceWeight": 1.0,
                 "recallSignificanceWeight": 1.0,
                 "capacityMemories": 100000,
                 "capacityPressureExponent": 4.0
@@ -88,7 +89,8 @@ class Hippocampus < Formula
       or run in the foreground:
         hippocampus -c #{etc}/hippocampus/config.json
 
-      gRPC on :50051, HTTP/JSON gateway (and /healthz) on :8080.
+      gRPC on 127.0.0.1:50051, HTTP/JSON gateway (and /healthz) on 127.0.0.1:8080.
+      Auth is off, so set auth.method before widening bindAddress / gateway.bindAddress.
     EOS
   end
 
